@@ -1,0 +1,40 @@
+<config>
+
+<object Name='Dialoger' Class='DialogerLib.Dialoger'>
+	<config>
+		<FileName>es.dsf</FileName>
+	</config>
+</object>
+
+<object Name='Model' Class='Model.ATModel'>
+<config>
+</config>
+</object>
+
+<object Name='ESKernel' Class='SolverXLib.SolverX'>
+<config>
+  <FileName>TKBnewforAT.xml</FileName>
+</config>
+</object>
+
+<object Name='TemporalReasoner' Class='MProgram.TemporalReasonerX'>
+	<config>
+  		<FileName>TKBnew.xml</FileName>
+ 		<FileNameAT>TKBnewforAT.xml</FileNameAT>
+		<EventsIntervals>Allen2.xml</EventsIntervals>
+		<ModelFileName>Model.xml</ModelFileName>
+	</config>
+</object>
+
+<object Name='IntegrationComponent' Class='IntegrationComponent.IntegrationComponent'>
+	<config>
+		<Log>integration_log.txt</Log>
+		<FileNameAT>TKBnewforAT.xml</FileNameAT>
+	</config>
+</object>
+
+<message RcvrName='Dialoger'>
+	<message ProcName='Run' />
+</message>
+
+</config>

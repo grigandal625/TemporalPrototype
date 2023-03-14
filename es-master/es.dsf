@@ -1,0 +1,62 @@
+scenario Main;
+  
+send CreateMainForm;
+
+end;
+
+
+subscenario Выход;
+
+  stop;
+
+end;
+
+
+subscenario RunIntegration;
+ 
+ send '<message ProcName="ProcessTacts" />' to IntegrationComponent;
+ 
+
+ send concat('output ', string(concat('__________________________________________________________________')),
+              'as String on Left') to Informer;
+
+ send concat('output ', string(concat('Состояние пациента:  "', #Пациент1.Болен#, '"')),
+              'as String on Left') to Informer;
+
+
+
+send 'activate' to Informer;
+
+end;
+
+
+subscenario ShowBB;
+
+  send '<message ProcName="ShowBB"/>' to IntegrationComponent;
+
+end;
+
+
+subscenario DropTemporalModel;
+ 
+ send '<message ProcName="DropTemporalModel"/>' to IntegrationComponent;
+
+end;
+
+
+message CreateMainForm to Alternativer
+  line 'set Caption to $'Test$'';
+ 
+line 'set PictureFile to $'pnk.bmp$'';
+
+line 'on $'Файл/Выход$' execute Выход';
+ 
+line 'on $'Совместное функционирование/Один такт$' execute RunIntegration';
+ 
+line 'on $'Совместное функционирование/Очистить темпоральную модель$' execute DropTemporalModel';
+ 
+line 'on $'Совместное функционирование/Классная доска$' execute ShowBB';
+
+
+line 'activate';
+end;

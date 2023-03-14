@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+
+<IntervalsAndEvents>
+<Intervals>
+
+<Interval Name="Занятность_МЧС_1">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_1.Занятность_бригад"/>
+        <String Value="Бригады_заняты"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_1.Занятность_бригад"/>
+        <String Value="Бригадны_свободны"/>
+      </EqOp>    
+  </Close>
+</Interval>
+
+<Interval Name="МЧС_1_на_месте_взрыва_первого_трубопровода">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_1.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Да"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_1.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Нет"/>
+      </EqOp>    
+  </Close>
+</Interval>
+
+<Interval Name="Занятность_МЧС_2">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_2.Занятность_бригад"/>
+        <String Value="Бригады_заняты"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_2.Занятность_бригад"/>
+        <String Value="Бригадны_свободны"/>
+      </EqOp>    
+  </Close>
+</Interval>
+
+<Interval Name="МЧС_2_на_месте_взрыва_второго_трубопровода">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_2.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Да"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_2.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Нет"/>
+      </EqOp>    
+  </Close>
+</Interval>
+
+<Interval Name="Занятность_МЧС_3">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_3.Занятность_бригад"/>
+        <String Value="Бригады_заняты"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_3.Занятность_бригад"/>
+        <String Value="Бригадны_свободны"/>
+      </EqOp>    
+  </Close>
+</Interval>
+
+<Interval Name="МЧС_3_на_месте_взрыва_первой_ЛЭП">
+  <Open>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_3.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Да"/>
+      </EqOp>    
+  </Open>
+  <Close>
+      <EqOp Value="eq">
+        <Attribute Value="Отдел_МЧС_3.МЧС_прибыли_на_место_происшествия"/>
+        <String Value="Нет"/>
+      </EqOp>    
+  </Close>
+</Interval>
+</Intervals>
+
+<Events>
+<Event Name="Взрыв_на_первом_трубопроводе">
+  <Formula>
+      <EqOp Value="eq">
+        <Attribute Value="Трубопровод_1.Состояние_трубопровода"/>
+        <String Value="Взрыв"/>
+      </EqOp>       
+  </Formula>
+</Event> 
+
+
+<Event Name="Взрыв_на_втором_трубопроводе">
+  <Formula>
+      <EqOp Value="eq">
+        <Attribute Value="Трубопровод_2.Состояние_трубопровода"/>
+        <String Value="Взрыв"/>
+      </EqOp>       
+  </Formula>
+</Event>
+
+<Event Name="Взрыв_на_первой_ЛЭП">
+  <Formula>
+      <EqOp Value="eq">
+        <Attribute Value="ЛЭП_1.Состояние_ЛЭП"/>
+        <String Value="Взрыв"/>
+      </EqOp>       
+  </Formula>
+</Event>
+</Events>
+</IntervalsAndEvents>
