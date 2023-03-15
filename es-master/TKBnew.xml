@@ -42,7 +42,11 @@
       <value>Да</value>
       <value>Нет</value>
     </type>
-	<type id="ТИП11" meta="string" desc="Ветрянка">
+    <type id="ТИП11" meta="string" desc="Ветрянка">
+      <value>Да</value>
+      <value>Нет</value>
+    </type>
+    <type id="ТИП11" meta="string" desc="Сыпь">
       <value>Да</value>
       <value>Нет</value>
     </type>
@@ -63,6 +67,7 @@
 	<property id="Озноб" type="ТИП9" desc="Грипп_признак_1" source="inferred"/>
 	<property id="Озноб" type="ТИП10" desc="Грипп_признак_2" source="inferred"/>
 	<property id="Ветрянка" type="ТИП11" desc="Ветрянка" source="inferred"/>
+	<property id="Сыпь" type="ТИП11" desc="Сыпь" source="inferred"/>
       </properties>
     </class>
 
