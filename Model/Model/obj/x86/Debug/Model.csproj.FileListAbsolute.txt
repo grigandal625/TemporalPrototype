@@ -27,4 +27,3 @@ C:\Users\AILAB\Downloads\DLLS\Model\Model\bin\Debug\Model.dll
 C:\Users\AILAB\Downloads\DLLS\Model\Model\bin\Debug\Model.pdb
 C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.dll
 C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.pdb
-C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.csprojResolveAssemblyReference.cache

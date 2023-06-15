@@ -1,72 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <IntervalsAndEvents>
+
 <Intervals>
 
-<Interval Name="Активность_Димы">
-  <Open>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Дима"/>
-      </EqOp>    
-  </Open>
-  <Close>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Лёва"/>
-      </EqOp>    
-  </Close>
+<Interval Name="Жар">
+<Open>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Температура"/>
+<String Value="Повышенная"/>
+</EqOp>
+</Open>
+<Close>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Температура"/>
+<String Value="Нормальная"/>
+</EqOp>
+</Close>
 </Interval>
 
-<Interval Name="Активность_Лёвы">
-  <Open>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Лёва"/>
-      </EqOp>    
-  </Open>
-  <Close>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Саша"/>
-      </EqOp>    
-  </Close>
+<Interval Name="Слабость">
+<Open>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Температура"/>
+<String Value="Пониженная"/>
+</EqOp>
+</Open>
+<Close>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Температура"/>
+<String Value="Нормальная"/>
+</EqOp>
+</Close>
 </Interval>
 
-<Interval Name="Активность_Саши">
-  <Open>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Саша"/>
-      </EqOp>    
-  </Open>
-  <Close>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Имя"/>
-        <String Value="Дима"/>
-      </EqOp>    
-  </Close>
-</Interval>
 </Intervals>
 
 <Events>
 
-<Event Name="Стакан_пуст">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Состояние"/>
-        <String Value="Пуст"/>
-      </EqOp>       
-  </Formula>
-</Event> 
+<Event Name="Кашляет_сухо">
+<Formula>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Кашель"/>
+<String Value="Сухой"/>
+</EqOp>
+</Formula>
+</Event>
 
-<Event Name="Стакан_полон">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Стакан.Состояние"/>
-        <String Value="Полон"/>
-      </EqOp>       
-  </Formula>
-</Event> 
+<Event Name="Кашляет_влажно">
+<Formula>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Кашель"/>
+<String Value="Влажный"/>
+</EqOp>
+</Formula>
+</Event>
+
+<Event Name="Сыпь_соб">
+<Formula>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Сыпь"/>
+<String Value="Есть"/>
+</EqOp>
+</Formula>
+</Event>
+
+<Event Name="Озноб_соб">
+<Formula>
+<EqOp Value="eq">
+<Attribute Value="Пациент.Озноб"/>
+<String Value="Есть"/>
+</EqOp>
+</Formula>
+</Event>
+
 </Events>
 </IntervalsAndEvents>

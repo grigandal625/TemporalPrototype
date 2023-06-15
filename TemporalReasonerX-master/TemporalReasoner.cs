@@ -491,7 +491,7 @@ namespace AT_TemporalReasoner
                             sw.Write(intervalEndTime + ")");
                         }
                         if ((Events[ev].Last() > intervalStartTime && intervalStartTime != -1) &&
-                            (Events[ev].Last() < intervalEndTime || intervalEndTime == -1))
+                            (Events[ev].Last() < intervalEndTime || intervalEndTime == -1)) 
                         {
                             using (System.IO.StreamWriter sw = new System.IO.StreamWriter("interval.txt", true))
                             {

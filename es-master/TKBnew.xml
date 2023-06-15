@@ -1,172 +1,847 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <knowledge-base creation-date="01.04.2013 14:14:43">
-  <problem-info/>
-  <types>
-    <type id="ТИП1" meta="string" desc="Оповещение">
-      <value>Дима, наливай</value>
-      <value>Дима, пей</value>
-      <value>Лёва, наливай</value>
-      <value>Лёва, пей</value>
-      <value>Саша, наливай</value>
-      <value>Саша, пей</value>
-      <value>Ничего не нужно делать</value>
-    </type>
-    <type id="ТИП2" meta="number" desc="Время">
-      <from>0</from>
-      <to>1000000</to>
-    </type>
-  </types>
+<problem-info/>
+<types>
+	<type id="ТИП_Температура" meta="string" desc="Температура">
+		<value>Пониженная</value>
+		<value>Нормальная</value>
+		<value>Повышенная</value>
+	</type>
+	<type id="ТИП_Кашель" meta="string" desc="Кашель">
+		<value>Нет</value>
+		<value>Сухой</value>
+		<value>Влажный</value>
+	</type>
+	<type id="ТИП_Интенсивность_кашля" meta="string" desc="Интенсивность_кашля">
+		<value>Сильный</value>
+		<value>Слабый</value>
+	</type>
+	<type id="ТИП_Да_Нет" meta="string" desc="Да_Нет">
+		<value>Есть</value>
+		<value>Нет</value>
+	</type>
+	<type id="ТИП_Лихорадка" meta="string" desc="Лихорадка">
+		<value>Есть</value>
+		<value>Нет</value>
+		<value>Слабая</value>
+		<value>Сильная</value>
+	</type>
+	<type id="ТИП_Диагноз" meta="string" desc="Диагноз">
+		<value>ОРЗ</value>
+		<value>Ветрянка</value>
+		<value>Грипп</value>
+		<value>Здоров</value>
+	</type>
+</types>
+<classes>
+<class id="КЛАСС1" desc="Пациент">
+<properties>
+<property id="Температура" type="ТИП_Температура" desc="Температура" source="inferred"/>
+<property id="Кашель" type="ТИП_Кашель" desc="Кашель" source="inferred"/>
+<property id="Интенсивность_кашля" type="ТИП_Интенсивность_кашля" desc="Интенсивность_кашля" source="inferred"/>
+<property id="Озноб" type="ТИП_Да_Нет" desc="Озноб" source="inferred"/>
+<property id="Признак_гриппа_1" type="ТИП_Да_Нет" desc="Признак_гриппа_1" source="inferred"/>
+<property id="Признак_гриппа_2" type="ТИП_Да_Нет" desc="Признак_гриппа_2" source="inferred"/>
+<property id="Признак_ветрянки" type="ТИП_Да_Нет" desc="Признак_ветрянки" source="inferred"/>
+<property id="Сыпь" type="ТИП_Да_Нет" desc="Сыпь" source="inferred"/>
+<property id="Лихорадка" type="ТИП_Лихорадка" desc="Лихорадка" source="inferred"/>
+<property id="Диагноз" type="ТИП_Диагноз" desc="Диагноз" source="inferred"/>
+</properties>
+</class>
+<class id="world" desc="Класс верхнего уровня, включающий в себя экземпляры других классов и общие правила">
+<properties>
+<property id="Пациент" type="КЛАСС1" source="none" create="true" desc="Пациент"/>
+</properties>
 
-  <classes>
-    <class id="Лол" desc="Лол">
-      <properties>
-        <property id="Оповещение" type="ТИП1" desc="Оповещение" source="inferred"/>
-      </properties>
-    </class>
+<rules>
 
-    <class id="Счетчик" desc="Счетчик">
-      <properties>
-        <property id="Секунды" type="ТИП2" desc="Время" source="inferred"/>
-      </properties>
-    </class>
+<rule id="t1" meta="simple" desc="Т-правило">
+<condition>
+<EvIntRel Value="d">
+<Event Name="Озноб_соб"/>
+<Interval Name="Жар"/>
+</EvIntRel>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-    <class id="world" desc="Класс верхнего уровня, включающий в себя экземпляры других классов и общие правила">
-      <properties>
-        <property id="Лол" type="Лол" source="none" create="true" desc="Лол"/>
-        <property id="Счетчик" type="Счетчик" source="none" create="true" desc="Лол"/>
-      </properties>
-      <rules>
+<rule id="t2" meta="simple" desc="Т-правило">
+<condition>
+<EvIntRel Value="d">
+<Event Name="Кашляет_сухо"/>
+<Interval Name="Жар"/>
+</EvIntRel>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t1" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_пуст"/>
-              <Interval Name = "Активность_Димы"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Дима, наливай</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="t3" meta="simple" desc="Т-правило">
+<condition>
+<EvIntRel Value="d">
+<Event Name="Кашляет_влажно"/>
+<Interval Name="Жар"/>
+</EvIntRel>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t2" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_полон"/>
-              <Interval Name = "Активность_Димы"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Дима, пей</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="t4" meta="simple" desc="Т-правило">
+<condition>
+<EvIntRel Value="d">
+<Event Name="Сыпь_соб"/>
+<Interval Name="Жар"/>
+</EvIntRel>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
 
-        <rule id="t3" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_пуст"/>
-              <Interval Name = "Активность_Лёвы"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Лёва, наливай</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="b1" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t4" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_полон"/>
-              <Interval Name = "Активность_Лёвы"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Лёва, пей</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="b2" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t5" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_пуст"/>
-              <Interval Name = "Активность_Саши"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Саша, наливай</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="b3" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Озноб"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t6" meta="simple" desc="Т-правило">
-          <condition>
-            <EvIntRel Value="d">
-              <Event Name = "Стакан_полон"/>
-              <Interval Name = "Активность_Саши"/>
-            </EvIntRel>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Саша, пей</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
+<rule id="b4" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Сухой</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Интенсивность_кашля"/>
+</ref>
+<value>Сильный</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
 
-        <rule id="t7" meta="simple" desc="B-правило">
-          <condition>
-            <eq>
-              <ref id="Счетчик">
-                <ref id="Секунды"/>
-              </ref>
-              <value>0</value>
-            </eq>
-          </condition>
-          <action>
-            <assign>
-              <ref id="Лол">
-                <ref id="Оповещение"/>
-              </ref>
-              <value>Ничего не нужно делать</value>
-              <with belief="50" probability="100" accuracy="0"/>
-            </assign>
-          </action>
-        </rule>
-      </rules>
-      <methods/>
-    </class>
-  </classes>
+<rule id="b5" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Влажный</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Интенсивность_кашля"/>
+</ref>
+<value>Слабый</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b6" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Сыпь"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b7" meta="simple" desc="z1">
+<condition>
+<eq>
+<ref id="Пациент">
+<ref id="Интенсивность_кашля"/>
+</ref>
+<value>Сильный</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b8" meta="simple" desc="z1">
+<condition>
+<eq>
+<ref id="Пациент">
+<ref id="Интенсивность_кашля"/>
+</ref>
+<value>Слабый</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b9" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>Ветрянка</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b10" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>Ветрянка</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b11" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>ОРЗ</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b12" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>ОРЗ</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b13" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>ОРЗ</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b14" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>Грипп</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b15" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>Грипп</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b16" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Диагноз"/>
+</ref>
+<value>Здоров</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b17" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Повышенная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Озноб"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b18" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Повышенная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Сыпь"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b19" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Нормальная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Озноб"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b20" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Повышенная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b21" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Температура"/>
+</ref>
+<value>Повышенная</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Кашель"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule>
+
+<rule id="b22" meta="simple" desc="z1">
+<condition>
+<and>
+<eq>
+<ref id="Пациент">
+<ref id="Лихорадка"/>
+</ref>
+<value>Есть</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_ветрянки"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_1"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+<eq>
+<ref id="Пациент">
+<ref id="Признак_гриппа_2"/>
+</ref>
+<value>Нет</value>
+<with belief="50" probability="100" accuracy="0"/>
+</eq>
+</and>
+</condition>
+<action>
+<assign>
+<ref id="Пациент">
+<ref id="ОРЗ"/>
+</ref>
+<value>Здоров</value>
+<with belief="50" probability="100" accuracy="0"/>
+</assign>
+</action>
+</rule> 
+
+</rules>
+<methods/>
+</class>
+</classes>
 </knowledge-base>

@@ -1,33 +1,57 @@
 ﻿<goal-net>
-    <goal ref="signifier.Оповещение" refcount="0">
+    <goal ref="signifier.Температура" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.Секунды" refcount="0">
+    <goal ref="signifier.Кашель" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[0]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Интенсивность_кашля" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[1]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Озноб" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[2]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Признак_гриппа_1" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[3]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Признак_гриппа_2" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[4]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Признак_ветрянки" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>
-    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[5]/condition/EvIntRel" refcount="0">
+    <goal ref="signifier.Сыпь" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.Лихорадка" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.Диагноз" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[1]/rules/rule[0]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[1]/rules/rule[1]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[1]/rules/rule[2]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[1]/rules/rule[3]/condition/EvIntRel" refcount="0">
         <subgoals>
                 </subgoals>
             </goal>

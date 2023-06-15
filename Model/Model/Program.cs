@@ -46,7 +46,7 @@ namespace Model
     {
         static Random rnd = new Random();
 
-        static Стакан Стакан;
+        static Пациент Пациент;
         static Счетчик Счетчик;
         static int Номер_текущего_такта = 0;
         System.Object m_broker;
@@ -114,61 +114,54 @@ namespace Model
             Номер_текущего_такта = Номер_текущего_такта + 1;
             if (Номер_текущего_такта == 1)
             {
-                Стакан = new Стакан();
-                Стакан.Состояние = Стакан.Enum_Состояние.Пуст;
-                Стакан.Имя = Стакан.Enum_Имя.Дима;
+                Пациент = new Пациент();
+                Пациент.Температура = Пациент.Enum_Температура.Нормальная;
+                Пациент.Кашель = Пациент.Enum_Кашель.Нет;
+                Пациент.Сыпь = Пациент.Enum_Есть_Нет.Нет;
+                Пациент.Озноб = Пациент.Enum_Есть_Нет.Нет;
+
                 Счетчик = new Счетчик();
                 Счетчик.Отчет = Счетчик.Enum_Отчет.Да;
                 Счетчик.Секунды = 0;
                 Счетчик.Индикатор = 0;
                 formingOutParam(MessageText);
                 Random rnd = new Random();
-                Операция_4();
-                Операция_2();
-                Операция_3();
-                Операция_1();
-                Операция_5();
-                Операция_6();
+                Операция_время();
+
+                Операция_температура();
+                Операция_сыпь();
             }
             else
             {
                 formingOutParam(MessageText);
                 Random rnd = new Random();
-                Операция_4();
-                Операция_2();
-                Операция_3();
-                Операция_1();
-                Операция_5();
-                Операция_6();
+                Операция_время();
+
+                Операция_температура();
+                Операция_сыпь();
             }
         }
         public void Stop()
         {
             Environment.Exit(0);
         }
-        static void Операция_4()
+        static void Операция_время()
         {
             Образец_изменения_времени(Счетчик);
         }
-        static void Операция_2()
+        static void Операция_температура()
         {
-            Определение_определения_1(Стакан);
+            Определение_температуры(Пациент);
         }
+        static void Операция_сыпь()
+        {
+            Определение_сыпи(Пациент);
+        }
+
+        /*
         static void Операция_3()
         {
             Определение_определения_2(Стакан);
-        }
-        static void Операция_1()
-        {
-            Определение_имени_1(Стакан);
-        }
-        static void Операция_5()
-        {
-            Определение_имени_2(Стакан);
-        }
-        static void Операция_6()
-        {
-            Определение_имени_3(Стакан);
         }
         private static void Определение_определения_1(Стакан Стакан)
         {
@@ -184,37 +177,43 @@ namespace Model
                 Стакан.Состояние = Стакан.Enum_Состояние.Полон;
             }
         }
+        */
+
         private static void Образец_изменения_времени(Счетчик Счетчик)
         {
             if (Счетчик.Отчет == Счетчик.Enum_Отчет.Да)
             {
                 Счетчик.Отчет = Счетчик.Enum_Отчет.Нет;
                 System.Threading.Thread.Sleep(10);
-                Счетчик.Индикатор = Случайное_число(1, 100); Счетчик.Секунды = Счетчик.Секунды + 1; Счетчик.Отчет = Счетчик.Enum_Отчет.Да;
+                Счетчик.Индикатор = Случайное_число(1, 100);
+                Счетчик.Секунды = Счетчик.Секунды + 1;
+                Счетчик.Отчет = Счетчик.Enum_Отчет.Да;
             }
         }
-        private static void Определение_имени_1(Стакан Стакан)
+        private static void Определение_температуры(Пациент Пациент)
         {
-            if (Счетчик.Секунды > 0 && Счетчик.Секунды < 2)
+            if (Счетчик.Секунды % 5 > 1)
             {
-                Стакан.Имя = Стакан.Enum_Имя.Дима;
+                Пациент.Температура = Пациент.Enum_Температура.Повышенная;
+            }
+            else
+            {
+                Пациент.Температура = Пациент.Enum_Температура.Нормальная;
             }
         }
-        private static void Определение_имени_3(Стакан Стакан)
+        private static void Определение_сыпи(Пациент Пациент)
         {
-            if (Счетчик.Секунды > 5 && Счетчик.Секунды < 1000)
+            if (Счетчик.Секунды == 3)
             {
-                Стакан.Имя = Стакан.Enum_Имя.Саша;
+                Пациент.Сыпь = Пациент.Enum_Есть_Нет.Есть;
+            }
+            else
+            {
+                Пациент.Сыпь = Пациент.Enum_Есть_Нет.Нет;
             }
         }
-        private static void Определение_имени_2(Стакан Стакан)
-        {
-            if (Счетчик.Секунды >= 2 && Счетчик.Секунды < 6)
-            {
-                // Стакан.Имя = Стакан.Enum_Имя.Лёва;
-                Стакан.Имя = Стакан.Enum_Имя.Андрей;
-            }
-        }
+
+
         static int Случайное_число(int inputNumber1, int inputNumber2)
         {
             return rnd.Next(inputNumber1, inputNumber2);
@@ -225,40 +224,95 @@ namespace Model
             doc.Load(@"bb2.xml");
             XmlNode factlist = doc.SelectSingleNode("//facts");
             factlist.RemoveAll();
-            XmlNode Стакан_Состояние = doc.CreateElement("fact");
-            XmlAttribute Стакан_Состояние_atr = doc.CreateAttribute("AttrPath");
-            Стакан_Состояние_atr.Value = "Стакан.Состояние";
-            Стакан_Состояние.Attributes.Append(Стакан_Состояние_atr);
-            XmlAttribute Стакан_Состояние_atr2 = doc.CreateAttribute("Value");
-            Стакан_Состояние_atr2.Value = Стакан.Состояние.ToString();
-            Стакан_Состояние.Attributes.Append(Стакан_Состояние_atr2);
-            XmlAttribute Стакан_Состояние_atr3 = doc.CreateAttribute("Belief");
-            Стакан_Состояние_atr3.Value = "50";
-            Стакан_Состояние.Attributes.Append(Стакан_Состояние_atr3);
-            XmlAttribute Стакан_Состояние_atr4 = doc.CreateAttribute("MaxBelief");
-            Стакан_Состояние_atr4.Value = "100";
-            Стакан_Состояние.Attributes.Append(Стакан_Состояние_atr4);
-            XmlAttribute Стакан_Состояние_atr5 = doc.CreateAttribute("Accuracy");
-            Стакан_Состояние_atr5.Value = "0";
-            Стакан_Состояние.Attributes.Append(Стакан_Состояние_atr5);
-            factlist.AppendChild(Стакан_Состояние);
-            XmlNode Стакан_Имя = doc.CreateElement("fact");
-            XmlAttribute Стакан_Имя_atr = doc.CreateAttribute("AttrPath");
-            Стакан_Имя_atr.Value = "Стакан.Имя";
-            Стакан_Имя.Attributes.Append(Стакан_Имя_atr);
-            XmlAttribute Стакан_Имя_atr2 = doc.CreateAttribute("Value");
-            Стакан_Имя_atr2.Value = Стакан.Имя.ToString();
-            Стакан_Имя.Attributes.Append(Стакан_Имя_atr2);
-            XmlAttribute Стакан_Имя_atr3 = doc.CreateAttribute("Belief");
-            Стакан_Имя_atr3.Value = "50";
-            Стакан_Имя.Attributes.Append(Стакан_Имя_atr3);
-            XmlAttribute Стакан_Имя_atr4 = doc.CreateAttribute("MaxBelief");
-            Стакан_Имя_atr4.Value = "100";
-            Стакан_Имя.Attributes.Append(Стакан_Имя_atr4);
-            XmlAttribute Стакан_Имя_atr5 = doc.CreateAttribute("Accuracy");
-            Стакан_Имя_atr5.Value = "0";
-            Стакан_Имя.Attributes.Append(Стакан_Имя_atr5);
-            factlist.AppendChild(Стакан_Имя);
+
+            XmlNode Пациент_Температура = doc.CreateElement("fact");
+            XmlAttribute Пациент_Температура_atr = doc.CreateAttribute("AttrPath");
+            Пациент_Температура_atr.Value = "Пациент.Температура";
+            Пациент_Температура.Attributes.Append(Пациент_Температура_atr);
+
+            XmlAttribute Пациент_Температура_atr2 = doc.CreateAttribute("Value");
+            Пациент_Температура_atr2.Value = Пациент.Температура.ToString();
+            Пациент_Температура.Attributes.Append(Пациент_Температура_atr2);
+
+            XmlAttribute Пациент_Температура_atr3 = doc.CreateAttribute("Belief");
+            Пациент_Температура_atr3.Value = "50";
+            Пациент_Температура.Attributes.Append(Пациент_Температура_atr3);
+
+            XmlAttribute Пациент_Температура_atr4 = doc.CreateAttribute("MaxBelief");
+            Пациент_Температура_atr4.Value = "100";
+            Пациент_Температура.Attributes.Append(Пациент_Температура_atr4);
+
+            XmlAttribute Пациент_Температура_atr5 = doc.CreateAttribute("Accuracy");
+            Пациент_Температура_atr5.Value = "0";
+            Пациент_Температура.Attributes.Append(Пациент_Температура_atr5);
+            factlist.AppendChild(Пациент_Температура);
+            // ------
+            XmlNode Пациент_Сыпь = doc.CreateElement("fact");
+            XmlAttribute Пациент_Сыпь_atr = doc.CreateAttribute("AttrPath");
+            Пациент_Сыпь_atr.Value = "Пациент.Сыпь";
+            Пациент_Сыпь.Attributes.Append(Пациент_Сыпь_atr);
+
+            XmlAttribute Пациент_Сыпь_atr2 = doc.CreateAttribute("Value");
+            Пациент_Сыпь_atr2.Value = Пациент.Сыпь.ToString();
+            Пациент_Сыпь.Attributes.Append(Пациент_Сыпь_atr2);
+
+            XmlAttribute Пациент_Сыпь_atr3 = doc.CreateAttribute("Belief");
+            Пациент_Сыпь_atr3.Value = "50";
+            Пациент_Сыпь.Attributes.Append(Пациент_Сыпь_atr3);
+
+            XmlAttribute Пациент_Сыпь_atr4 = doc.CreateAttribute("MaxBelief");
+            Пациент_Сыпь_atr4.Value = "100";
+            Пациент_Сыпь.Attributes.Append(Пациент_Сыпь_atr4);
+
+            XmlAttribute Пациент_Сыпь_atr5 = doc.CreateAttribute("Accuracy");
+            Пациент_Сыпь_atr5.Value = "0";
+            Пациент_Сыпь.Attributes.Append(Пациент_Сыпь_atr5);
+            factlist.AppendChild(Пациент_Сыпь);
+            // ------
+            XmlNode Пациент_Озноб = doc.CreateElement("fact");
+            XmlAttribute Пациент_Озноб_atr = doc.CreateAttribute("AttrPath");
+            Пациент_Озноб_atr.Value = "Пациент.Озноб";
+            Пациент_Озноб.Attributes.Append(Пациент_Озноб_atr);
+
+            XmlAttribute Пациент_Озноб_atr2 = doc.CreateAttribute("Value");
+            Пациент_Озноб_atr2.Value = Пациент.Озноб.ToString();
+            Пациент_Озноб.Attributes.Append(Пациент_Озноб_atr2);
+
+            XmlAttribute Пациент_Озноб_atr3 = doc.CreateAttribute("Belief");
+            Пациент_Озноб_atr3.Value = "50";
+            Пациент_Озноб.Attributes.Append(Пациент_Озноб_atr3);
+
+            XmlAttribute Пациент_Озноб_atr4 = doc.CreateAttribute("MaxBelief");
+            Пациент_Озноб_atr4.Value = "100";
+            Пациент_Озноб.Attributes.Append(Пациент_Озноб_atr4);
+
+            XmlAttribute Пациент_Озноб_atr5 = doc.CreateAttribute("Accuracy");
+            Пациент_Озноб_atr5.Value = "0";
+            Пациент_Озноб.Attributes.Append(Пациент_Озноб_atr5);
+            factlist.AppendChild(Пациент_Озноб);
+            // ------
+            XmlNode Пациент_Кашель = doc.CreateElement("fact");
+            XmlAttribute Пациент_Кашель_atr = doc.CreateAttribute("AttrPath");
+            Пациент_Кашель_atr.Value = "Пациент.Кашель";
+            Пациент_Кашель.Attributes.Append(Пациент_Кашель_atr);
+
+            XmlAttribute Пациент_Кашель_atr2 = doc.CreateAttribute("Value");
+            Пациент_Кашель_atr2.Value = Пациент.Кашель.ToString();
+            Пациент_Кашель.Attributes.Append(Пациент_Кашель_atr2);
+
+            XmlAttribute Пациент_Кашель_atr3 = doc.CreateAttribute("Belief");
+            Пациент_Кашель_atr3.Value = "50";
+            Пациент_Кашель.Attributes.Append(Пациент_Кашель_atr3);
+
+            XmlAttribute Пациент_Кашель_atr4 = doc.CreateAttribute("MaxBelief");
+            Пациент_Кашель_atr4.Value = "100";
+            Пациент_Кашель.Attributes.Append(Пациент_Кашель_atr4);
+
+            XmlAttribute Пациент_Кашель_atr5 = doc.CreateAttribute("Accuracy");
+            Пациент_Кашель_atr5.Value = "0";
+            Пациент_Кашель.Attributes.Append(Пациент_Кашель_atr5);
+            factlist.AppendChild(Пациент_Кашель);
+
             XmlNode Счетчик_Отчет = doc.CreateElement("fact");
             XmlAttribute Счетчик_Отчет_atr = doc.CreateAttribute("AttrPath");
             Счетчик_Отчет_atr.Value = "Счетчик.Отчет";
@@ -313,13 +367,16 @@ namespace Model
             doc.Save(@"bb2.xml");
         }
     }
+    /* 
     class Стакан
     {
         public enum Enum_Состояние { Пуст, Полон };
         public Enum_Состояние Состояние { get; set; }
-        public enum Enum_Имя { Дима, Лёва, Саша, Андрей };
+        public enum Enum_Имя { Дима, Лёва, Саша };
         public Enum_Имя Имя { get; set; }
-    }
+    } 
+    */
+
     class Счетчик
     {
         public enum Enum_Отчет { Да, Нет };
@@ -327,4 +384,20 @@ namespace Model
         public int Секунды { get; set; }
         public int Индикатор { get; set; }
     }
+}
+
+
+
+
+
+class Пациент
+{
+    public enum Enum_Есть_Нет { Есть, Нет };
+    public enum Enum_Температура { Пониженная, Повышенная, Нормальная };
+    public enum Enum_Кашель { Сухой, Влажный, Нет };
+
+    public Enum_Температура Температура { get; set; }
+    public Enum_Кашель Кашель { get; set; }
+    public Enum_Есть_Нет Озноб { get; set; }
+    public Enum_Есть_Нет Сыпь { get; set; }
 }

@@ -20,9 +20,27 @@ subscenario RunIntegration;
  send concat('output ', string(concat('__________________________________________________________________')),
               'as String on Left') to Informer;
 
- send concat('output ', string(concat('Владелец стакана:  "', #Стакан.Имя#, '"')),
+ send concat('output ', string(concat('Температура:  "', #Пациент.Температура#, '"')),
               'as String on Left') to Informer;
-send concat('output ', string(concat('Оповещение:  "', #Лол.Оповещение#, '"')),
+send concat('output ', string(concat('Сыпь:  "', #Пациент.Сыпь#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Озноб:  "', #Пациент.Озноб#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Кашель:  "', #Пациент.Кашель#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Интенсивность кашля:  "', #Пациент.Интенсивность_кашля#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Лихорадка:  "', #Пациент.Лихорадка#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Ветрянка:  "', #Пациент.Признак_Ветрянки#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Грипп_1:  "', #Пациент.Признак_Гриппа_1#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Грипп_2:  "', #Пациент.Признак_Гриппа_2#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('__________________________________________________________________')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Диагноз:  "', #Пациент.Диагноз#, '"')),
               'as String on Left') to Informer;
 
 
