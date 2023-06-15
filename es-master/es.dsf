@@ -20,7 +20,9 @@ subscenario RunIntegration;
  send concat('output ', string(concat('__________________________________________________________________')),
               'as String on Left') to Informer;
 
- send concat('output ', string(concat('Состояние пациента:  "', #Пациент1.Болен#, '"')),
+ send concat('output ', string(concat('Владелец стакана:  "', #Стакан.Имя#, '"')),
+              'as String on Left') to Informer;
+send concat('output ', string(concat('Оповещение:  "', #Лол.Оповещение#, '"')),
               'as String on Left') to Informer;
 
 

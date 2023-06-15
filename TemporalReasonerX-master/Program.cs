@@ -35,6 +35,7 @@ namespace MProgram
         string processedNTBfileName;
         string eventsIntervalsFileName;
         string ModelFileName;
+        string bbFileName;
 
         public string Name
         {
@@ -73,6 +74,7 @@ namespace MProgram
             processedNTBfileName = "TKBnewforAT.xml";
             eventsIntervalsFileName = "Allen2.xml";
             ModelFileName = "Model.xml";
+            bbFileName = "bb2.xml";
         }
 
         public void ProcessMessage(string SenderName, string MessageText, System.Object OleVariant)

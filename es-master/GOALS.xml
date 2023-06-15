@@ -1,0 +1,34 @@
+﻿<goal-net>
+    <goal ref="signifier.Оповещение" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.Секунды" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[0]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[1]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[2]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[3]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[4]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+    <goal ref="signifier.knowledge-base/classes/class[2]/rules/rule[5]/condition/EvIntRel" refcount="0">
+        <subgoals>
+                </subgoals>
+            </goal>
+</goal-net>

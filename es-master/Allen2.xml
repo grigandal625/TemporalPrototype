@@ -1,155 +1,72 @@
-﻿<?xml version="1.0" encoding="windows-1251"?>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <IntervalsAndEvents>
 <Intervals>
 
-<Interval Name="Температура_1">
+<Interval Name="Активность_Димы">
   <Open>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Температура"/>
-        <String Value="Да"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Дима"/>
       </EqOp>    
   </Open>
   <Close>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Температура"/>
-        <String Value="Нет"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Лёва"/>
       </EqOp>    
   </Close>
 </Interval>
 
-<Interval Name="Пациент_1_температура">
+<Interval Name="Активность_Лёвы">
   <Open>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Температура"/>
-        <String Value="Да"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Лёва"/>
       </EqOp>    
   </Open>
   <Close>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Температура"/>
-        <String Value="Нет"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Саша"/>
       </EqOp>    
   </Close>
 </Interval>
 
-<Interval Name="Температура_2">
+<Interval Name="Активность_Саши">
   <Open>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_2.Температура"/>
-        <String Value="Да"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Саша"/>
       </EqOp>    
   </Open>
   <Close>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_2.Температура"/>
-        <String Value="Нет"/>
+        <Attribute Value="Стакан.Имя"/>
+        <String Value="Дима"/>
       </EqOp>    
   </Close>
 </Interval>
-
-<Interval Name="Температура_3">
-  <Open>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_3.Температура"/>
-        <String Value="Да"/>
-      </EqOp>    
-  </Open>
-  <Close>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_3.Температура"/>
-        <String Value="Нет"/>
-      </EqOp>    
-  </Close>
-</Interval>
-
-
 </Intervals>
 
 <Events>
-<Event Name="Пациент_1_чихает">
+
+<Event Name="Стакан_пуст">
   <Formula>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Чихает"/>
-        <String Value="Да"/>
+        <Attribute Value="Стакан.Состояние"/>
+        <String Value="Пуст"/>
       </EqOp>       
   </Formula>
 </Event> 
 
-
-<Event Name="Пациент_2_чихает">
+<Event Name="Стакан_полон">
   <Formula>
       <EqOp Value="eq">
-        <Attribute Value="Пациент_2.Чихает"/>
-        <String Value="Да"/>
+        <Attribute Value="Стакан.Состояние"/>
+        <String Value="Полон"/>
       </EqOp>       
   </Formula>
 </Event> 
-
-<Event Name="Пациент_3_чихает">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_3.Чихает"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-
-<Event Name="Пациент_1_кашляет">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Кашляет"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-<Event Name="Пациент_2_кашляет">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_2.Кашляет"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-<Event Name="Пациент_3_кашляет">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_3.Кашляет"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-<Event Name="Пациент_1_озноб">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_1.Озноб"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-<Event Name="Пациент_2_озноб">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_2.Озноб"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
-<Event Name="Пациент_3_озноб">
-  <Formula>
-      <EqOp Value="eq">
-        <Attribute Value="Пациент_3.Озноб"/>
-        <String Value="Да"/>
-      </EqOp>       
-  </Formula>
-</Event> 
-
 </Events>
 </IntervalsAndEvents>

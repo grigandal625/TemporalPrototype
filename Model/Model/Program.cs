@@ -211,7 +211,8 @@ namespace Model
         {
             if (Счетчик.Секунды >= 2 && Счетчик.Секунды < 6)
             {
-                Стакан.Имя = Стакан.Enum_Имя.Лёва;
+                // Стакан.Имя = Стакан.Enum_Имя.Лёва;
+                Стакан.Имя = Стакан.Enum_Имя.Андрей;
             }
         }
         static int Случайное_число(int inputNumber1, int inputNumber2)
@@ -316,7 +317,7 @@ namespace Model
     {
         public enum Enum_Состояние { Пуст, Полон };
         public Enum_Состояние Состояние { get; set; }
-        public enum Enum_Имя { Дима, Лёва, Саша };
+        public enum Enum_Имя { Дима, Лёва, Саша, Андрей };
         public Enum_Имя Имя { get; set; }
     }
     class Счетчик

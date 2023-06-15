@@ -1,1032 +1,172 @@
-﻿<?xml version="1.0" encoding="windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <knowledge-base creation-date="01.04.2013 14:14:43">
-    <problem-info/>
+  <problem-info/>
   <types>
-    <type id="ТИП1" meta="string" desc="Болен">
-      <value>Да</value>
-      <value>Нет</value>
+    <type id="���1" meta="string" desc="����������">
+      <value>����, �������</value>
+      <value>����, ���</value>
+      <value>˸��, �������</value>
+      <value>˸��, ���</value>
+      <value>����, �������</value>
+      <value>����, ���</value>
+      <value>������ �� ����� ������</value>
     </type>
-    <type id="ТИП2" meta="string" desc="ОРЗ">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП3" meta="string" desc="Грипп">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП4" meta="string" desc="Лихорадка">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП5" meta="string" desc="Чихает">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП6" meta="string" desc="Кашляет">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП7" meta="string" desc="Температура">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП8" meta="string" desc="Озноб">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП9" meta="string" desc="Грипп_признак_1">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП10" meta="string" desc="Грипп_признак_2">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП11" meta="string" desc="Ветрянка">
-      <value>Да</value>
-      <value>Нет</value>
-    </type>
-    <type id="ТИП11" meta="string" desc="Сыпь">
-      <value>Да</value>
-      <value>Нет</value>
+    <type id="���2" meta="number" desc="�����">
+      <from>0</from>
+      <to>1000000</to>
     </type>
   </types>
 
-
   <classes>
-    <class id="КЛАСС1" desc="Пациент">
+    <class id="���" desc="���">
       <properties>
-        <property id="Болен" type="ТИП1" desc="Болен" source="inferred"/>
-        <property id="ОРЗ" type="ТИП2" desc="ОРЗ" source="inferred"/>
-        <property id="Грипп" type="ТИП3" desc="Грипп" source="inferred"/>
-	<property id="Лихорадка" type="ТИП4" desc="Лихорадка" source="inferred"/>
-        <property id="Чихает" type="ТИП5" desc="Чихает" source="inferred"/>
-        <property id="Кашляет" type="ТИП6" desc="Кашляет" source="inferred"/>
-	<property id="Температура" type="ТИП7" desc="Температура" source="inferred"/>
-        <property id="Озноб" type="ТИП8" desc="Озноб" source="inferred"/>
-	<property id="Озноб" type="ТИП9" desc="Грипп_признак_1" source="inferred"/>
-	<property id="Озноб" type="ТИП10" desc="Грипп_признак_2" source="inferred"/>
-	<property id="Ветрянка" type="ТИП11" desc="Ветрянка" source="inferred"/>
-	<property id="Сыпь" type="ТИП11" desc="Сыпь" source="inferred"/>
+        <property id="����������" type="���1" desc="����������" source="inferred"/>
       </properties>
     </class>
 
+    <class id="�������" desc="�������">
+      <properties>
+        <property id="�������" type="���2" desc="�����" source="inferred"/>
+      </properties>
+    </class>
 
-        <class id="world" desc="Класс верхнего уровня, включающий в себя экземпляры других классов и общие правила">
-          <properties>
-            <property id="Пациент_1" type="КЛАСС1" source="none" create="true" desc="Пациент_1"/>
-	    <property id="Пациент_2" type="КЛАСС1" source="none" create="true" desc="Пациент_2"/>
-	    <property id="Пациент_3" type="КЛАСС1" source="none" create="true" desc="Пациент_3"/>	
-          </properties>
-            <rules>
+    <class id="world" desc="����� �������� ������, ���������� � ���� ���������� ������ ������� � ����� �������">
+      <properties>
+        <property id="���" type="���" source="none" create="true" desc="���"/>
+        <property id="�������" type="�������" source="none" create="true" desc="���"/>
+      </properties>
+      <rules>
 
-              <rule id="t1" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_1_озноб"/>
-                    <Interval Name = "Пациент_1_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
+        <rule id="t1" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_����"/>
+              <Interval Name = "����������_����"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>����, �������</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
- 	     <rule id="t2" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_2_озноб"/>
-                    <Interval Name = "Пациент_2_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-
-
- 	    <rule id="t3" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_3_озноб"/>
-                    <Interval Name = "Пациент_3_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-
-		<rule id="t4" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_1_чихает"/>
-                    <Interval Name = "Пациент_1_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Грипп_признак_1"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-
- 	    <rule id="t5" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_2_чихает"/>
-                    <Interval Name = "Пациент_2_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Грипп_признак_1"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
+        <rule id="t2" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_�����"/>
+              <Interval Name = "����������_����"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>����, ���</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
 
- 	    <rule id="t6" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_3_чихает"/>
-                    <Interval Name = "Пациент_3_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Грипп_признак_1"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
+        <rule id="t3" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_����"/>
+              <Interval Name = "����������_˸��"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>˸��, �������</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
-               <rule id="t7" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_1_кашляет"/>
-                    <Interval Name = "Пациент_1_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Грипп_признак_2"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
+        <rule id="t4" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_�����"/>
+              <Interval Name = "����������_˸��"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>˸��, ���</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
- 	    <rule id="t8" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_2_кашляет"/>
-                    <Interval Name = "Пациент_2_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Грипп_признак_2"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
+        <rule id="t5" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_����"/>
+              <Interval Name = "����������_����"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>����, �������</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
+        <rule id="t6" meta="simple" desc="�-�������">
+          <condition>
+            <EvIntRel Value="d">
+              <Event Name = "������_�����"/>
+              <Interval Name = "����������_����"/>
+            </EvIntRel>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>����, ���</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
 
- 	    <rule id="t9" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_3_кашляет"/>
-                    <Interval Name = "Пациент_3_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Грипп_признак_2"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-			  
-			  
-		<rule id="t10" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_1_сыпь"/>
-                    <Interval Name = "Пациент_1_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-			  
-		<rule id="t11" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_2_сыпь"/>
-                    <Interval Name = "Пациент_2_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>
-
-		<rule id="t12" meta="simple" desc="Т-правило">
-                <condition>
-                  <EvIntRel Value="d">
-                    <Event Name = "Пациент_3_сыпь"/>
-                    <Interval Name = "Пациент_3_температура"/>
-                  </EvIntRel>
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                 </assign>
-                </action>
-              </rule>	  
-
-            
-		<rule id="b1" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Чихает"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Кашляет"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq> 
-		      <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Температура"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>   
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-
-		<rule id="b2" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Чихает"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Кашляет"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq> 
-		      <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Температура"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>   
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b3" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Чихает"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Кашляет"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq> 
-		      <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Температура"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>   
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b4" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Грипп_признак_1"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Грипп_признак_2"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b5" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Грипп_признак_1"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Грипп_признак_2"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-
-		<rule id="b6" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Грипп_признак_1"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Грипп_признак_2"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-
-		<rule id="b7" meta="simple" desc="z1">
-                <condition>
-                <or>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq> 
-			<eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>		  
-                 </or>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b8" meta="simple" desc="z1">
-                <condition>
-                <or>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>  
-			<eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>		  
-                 </or>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b9" meta="simple" desc="z1">
-                <condition>
-                <or>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    
-			<eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value>Да</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>		  
-					  
-                 </or>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Да</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-
-		<rule id="b10" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>		  
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b11" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>   
-			<eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>		  
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b12" meta="simple" desc="z1">
-                <condition>
-                <and>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Грипп"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-		      <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="ОРЗ"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>
-			<eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Лихорадка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    
-			<eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Ветрянка"/>
-                        </ref>
-                        <value></value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>    		  
-                 </and>            
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Болеет"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-		
-		<rule id="b13" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b14" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b15" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-
-              <rule id="b16" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b17" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b18" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b19" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Грипп"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b20" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="ОРЗ"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-
-		<rule id="b21" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Лихорадка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-			  
-		<rule id="b22" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_1">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_1">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>	  
-		
-		<rule id="b23" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_2">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_2">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-			  
-		<rule id="b24" meta="simple" desc="z1">
-                <condition>
-                     <eq>                   
-                      <ref id="Пациент_3">
-                        <ref id="Болеет"/>
-                        </ref>
-                        <value>Нет</value>
-                        <with belief="50" probability="100" accuracy="0"/>
-                      </eq>              
-                </condition>
-                <action>
-                  <assign>
-                    <ref id="Пациент_3">
-                      <ref id="Ветрянка"/>
-                    </ref>
-                    <value>Нет</value>
-                    <with belief="50" probability="100" accuracy="0"/>
-                  </assign>
-                </action>
-              </rule>
-		
-
-            </rules>
-            <methods/>
-        </class>
-    </classes>
+        <rule id="t7" meta="simple" desc="B-�������">
+          <condition>
+            <eq>
+              <ref id="�������">
+                <ref id="�������"/>
+              </ref>
+              <value>0</value>
+            </eq>
+          </condition>
+          <action>
+            <assign>
+              <ref id="���">
+                <ref id="����������"/>
+              </ref>
+              <value>������ �� ����� ������</value>
+              <with belief="50" probability="100" accuracy="0"/>
+            </assign>
+          </action>
+        </rule>
+      </rules>
+      <methods/>
+    </class>
+  </classes>
 </knowledge-base>

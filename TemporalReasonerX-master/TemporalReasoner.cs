@@ -21,9 +21,11 @@ namespace AT_TemporalReasoner
 
 
         public XDocument AllenDoc;
+        public Dictionary<string, List<string>> TemporalSignifications;
 
         public TemporalReasoner()
         {
+            TemporalSignifications = new Dictionary<string, List<string>>() { };
             Events = new Dictionary<string, List<int>>();
             intervalsTimes = new Dictionary<string, List<StartFinishTime>>();
 
@@ -42,7 +44,45 @@ namespace AT_TemporalReasoner
             }
         }
 
-
+        public void setRuleRef(XElement node, string ruleId) {
+            node.SetAttributeValue("ruleRef", ruleId);
+            foreach (XElement c in node.Elements())
+            {
+                setRuleRef(c, ruleId);
+            }
+        }
+        public string getNodePath(XElement node) {
+            Dictionary<string, string> attrs = new Dictionary<string,string>();
+            foreach (XAttribute attr in node.Attributes()){
+                attrs.Add(attr.Name.ToString(), attr.Value.ToString());
+            }
+            if (attrs.ContainsKey("initialPath"))
+            {
+                return attrs["initialPath"];
+            }
+            string path = node.Name.ToString();
+            if (node.Parent != null)
+            {
+                List<XElement> sameNamedNodes = new List<XElement> { };
+                foreach (XElement e in node.Parent.Elements().ToList())
+                {
+                    if (e.Name.ToString() == node.Name.ToString())
+                    {
+                        sameNamedNodes.Add(e);
+                    }
+                }
+                if (sameNamedNodes.Count > 1)
+                {
+                    path += @"[" + sameNamedNodes.IndexOf(node) + @"]";
+                }
+                if (node.Name == "rule")
+                {
+                    setRuleRef(node, node.Attribute("id").Value);
+                }
+                path = getNodePath(node.Parent) + @"/" + path;
+            }
+            return path;
+        }
         public void UpdateIntervalsEventsTime(Dictionary<string, string> CurrentData, int StepNum)
         {
             IEnumerable<XElement> events = AllenDoc.Root.Elements("Events").Elements(); //Выбираем события
@@ -141,7 +181,7 @@ namespace AT_TemporalReasoner
                         return result;
                     }
             }
-
+            
             foreach (XElement xel in rule.Elements())
             {
                 switch (xel.Name.ToString())
@@ -812,20 +852,76 @@ namespace AT_TemporalReasoner
             //Node.Name = "TruthVal";
             //Node.RemoveAll();
             //Node.Add(new XAttribute("Value", truthVal));
-            if (truthVal == "TRUE")
+            
+            // --- Григорьев А.А. 14.06.2023 закомментил все, что ниже и написал установку означиваний
+            //if (truthVal == "TRUE")
+            //{
+            //    Node.RemoveAll();
+            //    Node.Name = "eq";
+            //    Node.Add(new XElement("value", 1));
+            //    Node.Add(new XElement("value", 1));
+            //}
+            //if (truthVal == "FALSE")
+            //{
+            //    Node.RemoveAll();
+            //    Node.Name = "eq";
+            //    Node.Add(new XElement("value", 1));
+            //    Node.Add(new XElement("value", 2));
+            //}
+
+            string nodePath = getNodePath(Node);
+
+            if (TemporalSignifications.ContainsKey(nodePath))
             {
-                Node.RemoveAll();
-                Node.Name = "eq";
-                Node.Add(new XElement("value", 1));
-                Node.Add(new XElement("value", 1));
+                TemporalSignifications.Remove(nodePath);
             }
-            if (truthVal == "FALSE")
+            string ruleId = "";
+            string temporalExpressionData = "";
+            string sEvInt = "EvIntRel";
+            string sAlAttr = "AlAttr";
+            string sIntRel = "IntRel";
+            string sEvRel = "EvRel";
+            if (Node.Name == sEvInt)
             {
-                Node.RemoveAll();
-                Node.Name = "eq";
-                Node.Add(new XElement("value", 1));
-                Node.Add(new XElement("value", 2));
+                temporalExpressionData = "Event(" + Node.Descendants("Event").First().Attribute("Name").Value + ") " +
+                    Node.Attribute("Value").Value + 
+                    " Interval(" + Node.Descendants("Interval").First().Attribute("Name").Value + ")";
             }
+            else if (Node.Name == sIntRel)
+            {
+                temporalExpressionData = "Interval(" + Node.Descendants("Interval").First().Attribute("Name").Value + ") " +
+                    Node.Attribute("Value").Value +
+                    " Interval(" + Node.Descendants("Interval").Last().Attribute("Name").Value + ")";
+            }
+            else if (Node.Name == sEvRel)
+            {
+                temporalExpressionData = "Event(" + Node.Descendants("Event").First().Attribute("Name").Value + ") " +
+                    Node.Attribute("Value").Value +
+                    " Event(" + Node.Descendants("Event").Last().Attribute("Name").Value + ")";
+            }
+            else if (Node.Name == sAlAttr)
+            {
+                temporalExpressionData = "Выражение над атрибутами";
+            }
+
+            XElement n = Node;
+            while (n.Parent != null)
+            {
+                if (n.Attribute("ruleRef") != null)
+                {
+                    ruleId = n.Attribute("ruleRef").Value;
+                    break;
+                }
+                if (n.Name == "rule") {
+                    ruleId = n.Attribute("id").Value;
+                    break;
+                }
+                n = n.Parent;
+            }
+            List<string> v = new List<string>() {truthVal, "ПРАВИЛО " + ruleId, temporalExpressionData};
+            TemporalSignifications.Add(nodePath, v);
+            
+            
         }
 
 
@@ -939,7 +1035,7 @@ namespace AT_TemporalReasoner
         public List<XElement> EvalGeneral(XElement rule, Dictionary<string, List<string>> ClassesDic)
         {
             //MessageBox.Show(rule.ToString());
-            XElement rulecl = new XElement(rule);
+            XElement rulecl = rule;
             List<XElement> res = new List<XElement>();
             XElement vars = rulecl.Element("Variables");
             if (vars.Elements().Count() == 0)
@@ -962,7 +1058,7 @@ namespace AT_TemporalReasoner
 
                 foreach (string obj in ClassesDic[cl])
                 {
-                    XElement newrule = new XElement("Rule", new XAttribute("Name", rulename + "." + obj), new XAttribute("General", "True"), new XAttribute("Type", tp));
+                    XElement newrule = new XElement("Rule", new XAttribute("Name", rulename + "." + obj), new XAttribute("General", "True"), new XAttribute("Type", tp), new XAttribute("initialPath", obj + @"@" + getNodePath(rulecl)));
                     foreach (XElement el in rulecl.Elements()) newrule.Add(el);
 
                     EvalGenInNode(newrule.Element("If"), var, obj);

@@ -135,8 +135,8 @@ namespace IntegrationComponent
 
             UpdateBB();
 
-            logger.log(String.Format("Configuring ESKernel with FileName {0}", tkbNewForAt));
-            m_broker.ConfigurateObject("ESKernel", String.Format("<config><FileName>{0}</FileName></config>", tkbNewForAt));
+            //logger.log(String.Format("Configuring ESKernel with FileName {0}", tkbNewForAt));
+            //m_broker.ConfigurateObject("ESKernel", String.Format("<config><FileName>{0}</FileName></config>", tkbNewForAt));
             logger.log("Sending message to ESKernel");
             m_broker.SendMessage("IntegrationComponent", "ESKernel", "<message ProcName='TKnowledgeBase.ClearWorkMemory' />", out res);
             logger.log("Sending message to ESKernel");

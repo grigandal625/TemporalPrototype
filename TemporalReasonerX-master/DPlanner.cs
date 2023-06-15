@@ -27,6 +27,7 @@ namespace AT_DynamicPlanner
 
         XDocument DataDoc;
         XDocument TKBDoc;
+        XDocument BB;
 
         public DPlanner()
         {
@@ -43,8 +44,14 @@ namespace AT_DynamicPlanner
 
         public void LoadTKB(string TKBName)
         {
-            string kbdata = File.ReadAllText(TKBName, Encoding.GetEncoding(1251));
-            TKBDoc = XDocument.Parse(kbdata);
+            string bbdata = File.ReadAllText(TKBName, Encoding.GetEncoding(1251));
+            TKBDoc = XDocument.Parse(bbdata);
+        }
+
+        public void LoadBB(string BBName)
+        {
+            string kbdata = File.ReadAllText(BBName, Encoding.GetEncoding(1251));
+            BB = XDocument.Parse(kbdata);
         }
 
         //Загрузка данных за шаг = StepNum
@@ -142,6 +149,7 @@ namespace AT_DynamicPlanner
         //Загрузка правил
         public void LoadRules()
         {
+
             GeneralRules.Clear();
             PrivateRules.Clear();
 
@@ -168,7 +176,12 @@ namespace AT_DynamicPlanner
 
             Rules.Clear();
             foreach (XElement grule in GeneralRules) Rules.AddRange(TReasoner.EvalGeneral(grule, ClassesDic));
-            foreach (XElement prule in PrivateRules) Rules.Add(new XElement(prule));
+            foreach (XElement prule in PrivateRules) {
+                string rulePath = TReasoner.getNodePath(prule);
+                XElement newRule = new XElement(prule);
+                newRule.SetAttributeValue("initialPath", rulePath);
+                Rules.Add(newRule);
+            }
             TReasoner.EvalRules(Rules, CurrentData, PreviousData, StepNum);
 
             XmlDocument xdoc = new XmlDocument();
@@ -188,7 +201,7 @@ namespace AT_DynamicPlanner
                 RuleschildNode.AppendChild(xfrag);
             }
 
-            xdoc.Save("TKBnewforAT.xml");
+            xdoc.Save("TKBnewforAT.xml"); // в принципе это больше не нужно
 
         }
 
@@ -198,6 +211,24 @@ namespace AT_DynamicPlanner
             //Запись модели развития событий в файл
             XmlDocument xdoc = new XmlDocument();
             xdoc.Load("BB2.xml");
+
+            // Запись означенных темпоральных условий
+            XmlNode facts = xdoc.SelectSingleNode("/bb/wm/facts");
+            foreach (string key in TReasoner.TemporalSignifications.Keys)
+            {
+                XmlElement newFact = xdoc.CreateElement("fact");
+                newFact.SetAttribute("AttrPath", "signifier." + key);
+                newFact.SetAttribute("Accuracy", "0");
+                newFact.SetAttribute("MaxBelief", "100");
+                newFact.SetAttribute("Belief", "50");
+                newFact.SetAttribute("Belief", "50");
+                newFact.SetAttribute("Value", TReasoner.TemporalSignifications[key][0]);
+                newFact.SetAttribute("RlueId", TReasoner.TemporalSignifications[key][1]);
+                newFact.SetAttribute("TemporalEntityId", TReasoner.TemporalSignifications[key][2]);
+                facts.AppendChild(newFact);
+            }
+
+            xdoc.Save("BB2.xml");
 
             XmlNode childNode2 = xdoc.SelectSingleNode("/bb");
             XmlElement model = xdoc.CreateElement("temporalModel");
