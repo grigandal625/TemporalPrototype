@@ -33,8 +33,12 @@ namespace IntegrationComponent
         {
             if(_log != null)
             {
-                _log.Close();
-                _log.Dispose();
+                try
+                {
+                    _log.Close();
+                    _log.Dispose();
+                } catch {
+                }
             }
         }
 

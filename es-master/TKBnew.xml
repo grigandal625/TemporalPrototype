@@ -796,49 +796,6 @@
 </action>
 </rule>
 
-<rule id="b22" meta="simple" desc="z1">
-<condition>
-<and>
-<eq>
-<ref id="Пациент">
-<ref id="Лихорадка"/>
-</ref>
-<value>Есть</value>
-<with belief="50" probability="100" accuracy="0"/>
-</eq>
-<eq>
-<ref id="Пациент">
-<ref id="Признак_ветрянки"/>
-</ref>
-<value>Нет</value>
-<with belief="50" probability="100" accuracy="0"/>
-</eq>
-<eq>
-<ref id="Пациент">
-<ref id="Признак_гриппа_1"/>
-</ref>
-<value>Нет</value>
-<with belief="50" probability="100" accuracy="0"/>
-</eq>
-<eq>
-<ref id="Пациент">
-<ref id="Признак_гриппа_2"/>
-</ref>
-<value>Нет</value>
-<with belief="50" probability="100" accuracy="0"/>
-</eq>
-</and>
-</condition>
-<action>
-<assign>
-<ref id="Пациент">
-<ref id="ОРЗ"/>
-</ref>
-<value>Здоров</value>
-<with belief="50" probability="100" accuracy="0"/>
-</assign>
-</action>
-</rule> 
 
 </rules>
 <methods/>
