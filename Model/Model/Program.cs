@@ -1117,6 +1117,18 @@ namespace Model
             XmlNode factlist = bb.SelectSingleNode("//facts");
             factlist.RemoveAll();
 
+            XmlNode f = bb.CreateElement("fact");
+
+            XmlAttribute c = bb.CreateAttribute("AttrPath");
+            c.Value = "Счетчик.Текущий_такт";
+            f.Attributes.Append(c);
+
+            XmlAttribute cv = bb.CreateAttribute("Value");
+            cv.Value = tactNum;
+            f.Attributes.Append(cv);
+
+            factlist.AppendChild(f);
+
             XmlNodeList recourceList = doc.SelectNodes("//Ресурс[@Номер_такта=" + tactNum + "]");
             for (int i = 0; i < recourceList.Count; i++)
             {
@@ -1158,6 +1170,7 @@ namespace Model
                     factlist.AppendChild(fact);
                 }
             }
+
             bb.Save("bb2.xml");
         }
     }
