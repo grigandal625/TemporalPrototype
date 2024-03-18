@@ -64,17 +64,18 @@ namespace MProgram
 
         public void Configurate(string Config)
         {
-            //XmlDocument xdoc = new XmlDocument();
-            //xdoc.LoadXml("Config.xml");
-            //TKBfileName = xdoc.SelectSingleNode("/config/object/config/FileName").InnerText;
-            //processedNTBfileName = xdoc.SelectSingleNode("/config/object/config/FileNameAT").InnerText;
-            //eventsIntervalsFileName = xdoc.SelectSingleNode("/config/object/config/EventsIntervals").InnerText;
-            //ModelFileName = xdoc.SelectSingleNode("/config/object/config/ModelFileName").InnerText;
-            TKBfileName = "TKBnew.xml";
-            processedNTBfileName = "TKBnewforAT.xml";
-            eventsIntervalsFileName = "Allen2.xml";
-            ModelFileName = "Model.xml";
-            bbFileName = "bb2.xml";
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.LoadXml(Config);
+            TKBfileName = xdoc.SelectSingleNode("/config/FileName").InnerText;
+            processedNTBfileName = xdoc.SelectSingleNode("/config/FileNameAT").InnerText;
+            eventsIntervalsFileName = xdoc.SelectSingleNode("/config/EventsIntervals").InnerText;
+            ModelFileName = xdoc.SelectSingleNode("/config/ModelFileName").InnerText;
+
+            //TKBfileName = "TKBnew.xml";
+            //processedNTBfileName = "TKBnewforAT.xml";
+            //eventsIntervalsFileName = "Allen2.xml";
+            //ModelFileName = "Model.xml";
+            //bbFileName = "bb2.xml";
         }
 
         public void ProcessMessage(string SenderName, string MessageText, System.Object OleVariant)

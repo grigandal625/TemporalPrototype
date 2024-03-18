@@ -141,7 +141,14 @@ namespace AT_DynamicPlanner
                 }
                 else
                     continue;
-                CurrentData.Add(attrPath, value);
+                if (CurrentData.ContainsKey(attrPath))
+                {
+                    CurrentData[attrPath] = value;
+                }
+                else {
+                    CurrentData.Add(attrPath, value);
+                }
+                
             }
 
         }

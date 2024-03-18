@@ -22,7 +22,7 @@
   		<FileName>TKBnew.xml</FileName>
  		<FileNameAT>TKBnewforAT.xml</FileNameAT>
 		<EventsIntervals>Allen2.xml</EventsIntervals>
-		<ModelFileName>Model.xml</ModelFileName>
+		<ModelFileName>minakov_model.xml</ModelFileName>
 	</config>
 </object>
 
