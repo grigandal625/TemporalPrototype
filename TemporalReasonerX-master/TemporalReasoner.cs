@@ -23,13 +23,13 @@ namespace AT_TemporalReasoner
         public XDocument AllenDoc;
         public Dictionary<string, List<string>> TemporalSignifications;
 
-        public TemporalReasoner()
+        public TemporalReasoner(string eventsIntervalsFileName)
         {
             TemporalSignifications = new Dictionary<string, List<string>>() { };
             Events = new Dictionary<string, List<int>>();
             intervalsTimes = new Dictionary<string, List<StartFinishTime>>();
 
-            string allendata = File.ReadAllText("Allen2.xml", Encoding.GetEncoding(1251));
+            string allendata = File.ReadAllText(eventsIntervalsFileName, Encoding.GetEncoding(1251));
             AllenDoc = XDocument.Parse(allendata);
 
             foreach (XElement el in AllenDoc.Root.Elements("Intervals").Elements())

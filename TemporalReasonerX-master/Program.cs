@@ -82,7 +82,7 @@ namespace MProgram
         {
             // Работа темпорального решателя
             DPlanner Planner;
-            Planner = new DPlanner();
+            Planner = new DPlanner(eventsIntervalsFileName);
             Planner.LoadTKB(TKBfileName);
             Planner.LoadRules();
             Planner.LoadData();

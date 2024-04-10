@@ -29,7 +29,7 @@ namespace AT_DynamicPlanner
         XDocument TKBDoc;
         XDocument BB;
 
-        public DPlanner()
+        public DPlanner(string eventsIntervalsFileName)
         {
             ClassesDic = new Dictionary<string, List<string>>();
             CurrentData = new Dictionary<string, string>();
@@ -39,7 +39,7 @@ namespace AT_DynamicPlanner
             GeneralRules = new List<XElement>();
             Rules = new List<XElement>();
 
-            TReasoner = new TemporalReasoner();
+            TReasoner = new TemporalReasoner(eventsIntervalsFileName);
         }
 
         public void LoadTKB(string TKBName)
