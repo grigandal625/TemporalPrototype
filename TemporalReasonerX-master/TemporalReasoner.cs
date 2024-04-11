@@ -7,6 +7,135 @@ using System.Xml.Linq;
 
 namespace AT_TemporalReasoner
 {
+    public class TValue
+    {
+        public virtual string GetStrContent() {
+            throw new NotImplementedException();
+        }
+        public virtual bool isEmpty()
+        {
+            return false;
+        }
+
+        public virtual TValue copy()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TStrValue ToStrValue()
+        {
+            throw new NotImplementedException();
+        }
+        public virtual TBoolValue ToBoolValue()
+        {
+            throw new NotImplementedException();
+        }
+        public virtual TNumValue ToNumValue()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TEmptyValue : TValue
+    {
+        public override string GetStrContent()
+        {
+            return "";
+        }
+        public override bool isEmpty()
+        {
+            return true;
+        }
+        public override TValue copy()
+        {
+            return new TEmptyValue();
+        }
+    }
+
+    public class TStrValue : TValue
+    {
+        public string content;
+        public TStrValue(string cnt) {
+            this.content = cnt;
+        }
+        public override string GetStrContent()
+        {
+            return this.content;
+        }
+        public override TStrValue ToStrValue()
+        { // copying
+            return new TStrValue(this.content);
+        }
+        public override TBoolValue ToBoolValue()
+        {
+            return new TBoolValue(this.content != "");
+        }
+        public override TNumValue ToNumValue()
+        {
+            return new TNumValue(Convert.ToDouble(this.content));
+        }
+        public override TValue copy()
+        {
+            return this.ToStrValue();
+        }
+    };
+
+    public class TNumValue : TValue
+    {
+        public double content;
+        public TNumValue(double cnt) {
+            this.content = cnt;
+        }
+        public override string GetStrContent()
+        {
+            return Convert.ToString(this.content);
+        }
+        public override TStrValue ToStrValue()
+        {
+            return new TStrValue(this.GetStrContent());
+        }
+        public override TBoolValue ToBoolValue()
+        {
+            return new TBoolValue(this.content != 0);
+        }
+        public override TNumValue ToNumValue()
+        { // copying
+            return new TNumValue(this.content);
+        }
+
+        public override TValue copy()
+        {
+            return this.ToNumValue();
+        }
+    };
+     
+    public class TBoolValue : TValue
+    {
+        public bool content;
+        public TBoolValue(bool cnt) {
+            this.content = cnt;
+        }
+        public override string GetStrContent()
+        {
+            return Convert.ToString(this.content);
+        }
+        public override TStrValue ToStrValue()
+        {
+            return new TStrValue(this.GetStrContent());
+        }
+        public override TNumValue ToNumValue()
+        {
+            return new TNumValue(Convert.ToDouble(this.content));
+        }
+        public override TBoolValue ToBoolValue()
+        { // copying
+            return new TBoolValue(this.content);
+        }
+        public override TValue copy()
+        {
+            return this.ToBoolValue();
+        }
+    };
     public class TemporalReasoner
     {
         //public Dictionary<string, int> EventsTime;
@@ -19,10 +148,8 @@ namespace AT_TemporalReasoner
         StartFinishTime SFT;
         public Dictionary<string, List<StartFinishTime>> intervalsTimes;
 
-
         public XDocument AllenDoc;
         public Dictionary<string, List<string>> TemporalSignifications;
-
         public TemporalReasoner(string eventsIntervalsFileName)
         {
             TemporalSignifications = new Dictionary<string, List<string>>() { };
@@ -93,9 +220,9 @@ namespace AT_TemporalReasoner
                 String eventName = ev.Attribute("Name").Value;
                 t = ev.Element("Formula").Elements().ElementAt(0);
 
-                if (EvalLog(t, CurrentData))
+                TValue v = this.EvalNode(t, CurrentData);
+                if (!v.isEmpty() && v.ToBoolValue().content)
                 {
-
                     if (!Events.ContainsKey(eventName))
                     {
                         var list2 = new List<int>();
@@ -126,7 +253,9 @@ namespace AT_TemporalReasoner
                 close = intv.Element("Close").Elements().ElementAt(0);
                 int S = intervalsTimes[intv.Attribute("Name").Value].Last().S;
                 int F = intervalsTimes[intv.Attribute("Name").Value].Last().F;
-                if (EvalLog(open, CurrentData))  // условие открытия выполнено?
+
+                TValue openValue = this.EvalNode(open, CurrentData);
+                if (!openValue.isEmpty() && openValue.ToBoolValue().content)  // условие открытия выполнено?
                 {
                     if (S <= F) // если интервал закрыт
                     {
@@ -139,7 +268,8 @@ namespace AT_TemporalReasoner
                 }
                 else
                 {
-                    if (EvalLog(close, CurrentData)) // условие закрытия выполнено?
+                    TValue closeValue = this.EvalNode(open, CurrentData);
+                    if (!closeValue.isEmpty() && closeValue.ToBoolValue().content) // условие закрытия выполнено?
                         if (S > F) // если интервал открыт
                         {
                             var list2 = intervalsTimes[intv.Attribute("Name").Value];
@@ -1095,9 +1225,14 @@ namespace AT_TemporalReasoner
                     return Convert.ToDouble(Node.Attribute("Value").Value);
 
                 case "Attribute":
-                    return Convert.ToDouble(CurrentData[Node.Attribute("Value").Value]);
-
-
+                    if (CurrentData.ContainsKey(Node.Attribute("Value").Value))
+                    { 
+                        return Convert.ToDouble(CurrentData[Node.Attribute("Value").Value]);
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 case "ArOp":
                     switch (Node.Attribute("Value").Value)
                     {
@@ -1118,78 +1253,258 @@ namespace AT_TemporalReasoner
         }
 
         //Расчет логических выражений
+
+        private TValue EvalNode(XElement Node, Dictionary<string, string> CurrentData)
+        {
+            if (Node.Name.ToString() == "Number")
+            {
+                string value = Node.Attribute("Value").Value;
+                return new TNumValue(Convert.ToDouble(value));
+            }
+            if (Node.Name.ToString() == "TruthVal")
+            {
+                string value = Node.Attribute("Value").Value;
+                return new TBoolValue(value != "FALSE" && value != "False");
+            }
+            if (Node.Name.ToString() == "String")
+            {
+                string value = Node.Attribute("Value").Value;
+                return new TStrValue(value);
+            }
+            if (Node.Name.ToString() == "Attribute") {
+                return this.EvalAttributeNode(Node, CurrentData);
+            }
+            if (Node.Name.ToString() == "LogOp")
+            {
+                return this.EvalLogNode(Node, CurrentData);
+            }
+            if (Node.Name.ToString() == "ArOp")
+            {
+                return this.EvalArNode(Node, CurrentData);
+            }
+
+            return new TEmptyValue();
+        }
+        private TValue EvalAttributeNode(XElement Node, Dictionary<string, string> CurrentData)
+        {
+            string attrName = Node.Elements().ElementAt(0).Attribute("Value").Value;
+            if (CurrentData.ContainsKey(attrName))
+            {
+                return new TStrValue(CurrentData[attrName]);
+            }
+            return new TEmptyValue();
+        }
+
+        private TValue EvalLogNode(XElement Node, Dictionary<string, string> CurrentData)
+        {
+            string value = Node.Attribute("Value").Value;
+            XElement el1, el2;
+            TValue v1, v2;
+
+            switch (Node.Name.ToString())
+            {
+                case "EqOp":
+                    if (Node.Elements().Count() < 2)
+                    {
+                        return new TEmptyValue();
+                    }
+                    el1 = Node.Elements().ElementAt(0);
+                    el2 = Node.Elements().ElementAt(1);
+
+                    v1 = this.EvalNode(el1, CurrentData);
+                    v2 = this.EvalNode(el2, CurrentData);
+
+                    if (v1.isEmpty() || v2.isEmpty()) {
+                        return new TEmptyValue();
+                    }
+
+                    switch (value) { 
+                        case "eq":
+                            return new TBoolValue(v1.GetStrContent() == v2.GetStrContent());
+                        case "ne":
+                            return new TBoolValue(v1.GetStrContent() != v2.GetStrContent());
+                        case "gt":
+                            try
+                            {
+                                return new TBoolValue(v1.ToNumValue().content > v2.ToNumValue().content);
+                            }
+                            catch (Exception e)
+                            {
+                                return new TEmptyValue();
+                            }
+                        case "ge":
+                            try
+                            {
+                                return new TBoolValue(v1.ToNumValue().content >= v2.ToNumValue().content);
+                            }
+                            catch (Exception e)
+                            {
+                                return new TEmptyValue();
+                            }
+                        case "lt":
+                            try
+                            {
+                                return new TBoolValue(v1.ToNumValue().content < v2.ToNumValue().content);
+                            }
+                            catch (Exception e)
+                            {
+                                return new TEmptyValue();
+                            }
+                        case "le":
+                            try
+                            {
+                                return new TBoolValue(v1.ToNumValue().content <= v2.ToNumValue().content);
+                            }
+                            catch (Exception e)
+                            {
+                                return new TEmptyValue();
+                            }
+                    }
+                    break;
+                case "LogOp":
+                    if (Node.Elements().Count() < 1) { return new TEmptyValue(); }
+
+                    el1 = Node.Elements().ElementAt(0);
+                    v1 = this.EvalNode(el1, CurrentData);
+
+                    if (value == "NOT") { return new TBoolValue(!v1.ToBoolValue().content); }
+                    
+                    if (Node.Elements().Count() < 2) { return new TEmptyValue(); }
+
+                    el2 = Node.Elements().ElementAt(1);
+                    v2 = this.EvalNode(el2, CurrentData);
+                    
+                    switch (value)
+                    {
+                        case "AND":
+                            if (v1.isEmpty()) { return new TEmptyValue(); }
+                            if (v1.ToBoolValue().content && v2.isEmpty()) { return new TEmptyValue(); }
+                            return new TBoolValue(v1.ToBoolValue().content && v2.ToBoolValue().content);
+                        case "OR":
+                            if (v1.isEmpty()) 
+                            {
+                                if (v2.isEmpty()) { return new TEmptyValue(); }
+                                return v2.copy();
+                            }
+                            else
+                            {
+                                if (v2.isEmpty()) { return v1.copy(); }
+                                return new TBoolValue(v1.ToBoolValue().content || v2.ToBoolValue().content);
+                            }
+                        case "XOR":
+                            if (v1.isEmpty() || v2.isEmpty())
+                            {
+                                return new TEmptyValue();
+                            }
+                            return new TBoolValue(v1.ToBoolValue().content ^ v2.ToBoolValue().content);
+                    }
+                    break;
+            }
+            return new TEmptyValue();
+        }
+        private TValue EvalArNode(XElement Node, Dictionary<string, string> CurrentData)
+        {
+            string value = Node.Attribute("Value").Value;
+
+            XElement el1 = Node.Elements().ElementAt(0);
+            XElement el2;
+
+            TValue v1 = this.EvalNode(el1, CurrentData);
+            TValue v2;
+
+            switch (value)
+            {
+                case "+":
+                    el2 = Node.Elements().ElementAt(1);
+                    v2 = this.EvalNode(el2, CurrentData);
+                    return new TNumValue(v1.ToNumValue().content + v2.ToNumValue().content);
+                case "-":
+                    if (Node.Elements().Count() == 2) {
+                        el2 = Node.Elements().ElementAt(1);
+                        v2 = this.EvalNode(el2, CurrentData);
+                        return new TNumValue(v1.ToNumValue().content - v2.ToNumValue().content);
+                    };
+                    return new TNumValue(0 - v1.ToNumValue().content);
+                case "*":
+                    el2 = Node.Elements().ElementAt(1);
+                    v2 = this.EvalNode(el2, CurrentData);
+                    return new TNumValue(v1.ToNumValue().content * v2.ToNumValue().content);
+                case "/":
+                    el2 = Node.Elements().ElementAt(1);
+                    v2 = this.EvalNode(el2, CurrentData);
+                    return new TNumValue(v1.ToNumValue().content / v2.ToNumValue().content);
+            }
+            return new TEmptyValue();
+        }
         private bool EvalLog(XElement Node, Dictionary<string, string> CurrentData)
         {
             string value = Node.Elements().ElementAt(0).Attribute("Value").Value;
-            if (CurrentData.ContainsKey(value))
+
+            switch (Node.Name.ToString())
             {
-                switch (Node.Name.ToString())
-                {
-                    case "EqOp":
-                        XElement el;
-                        switch (Node.Attribute("Value").Value)
-                        {
-                            case "eq":
-                                el = Node.Elements().ElementAt(1);
-                                if (el.Name.ToString() == "String")
-                                {
-                                    return (CurrentData[Node.Elements().ElementAt(0).Attribute("Value").Value.ToString()] == Node.Elements().ElementAt(1).Attribute("Value").Value.ToString());
-                                }
-                                else
-                                {
-                                    return (EvalAr(Node.Elements().ElementAt(0), CurrentData) == EvalAr(Node.Elements().ElementAt(1), CurrentData));
-                                }
+                case "EqOp":
+                    XElement el;
+                    switch (Node.Attribute("Value").Value)
+                    {
+                        case "eq":
+                            el = Node.Elements().ElementAt(1);
+                            if (el.Name.ToString() == "String")
+                            {
+                                return (CurrentData[Node.Elements().ElementAt(0).Attribute("Value").Value.ToString()] == Node.Elements().ElementAt(1).Attribute("Value").Value.ToString());
+                            }
+                            else
+                            {
+                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) == EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                            }
 
-                            case "ne":
-                                el = Node.Elements().ElementAt(1);
-                                if (el.Name.ToString() == "String")
-                                {
-                                    return (CurrentData[Node.Elements().ElementAt(0).Attribute("Value").Value] != Node.Elements().ElementAt(1).Attribute("Value").Value);
-                                }
-                                else
-                                {
-                                    return (EvalAr(Node.Elements().ElementAt(0), CurrentData) != EvalAr(Node.Elements().ElementAt(1), CurrentData));
-                                }
+                        case "ne":
+                            el = Node.Elements().ElementAt(1);
+                            if (el.Name.ToString() == "String")
+                            {
+                                return (CurrentData[Node.Elements().ElementAt(0).Attribute("Value").Value] != Node.Elements().ElementAt(1).Attribute("Value").Value);
+                            }
+                            else
+                            {
+                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) != EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                            }
 
-                            case "gt":
-                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) > EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                        case "gt":
+                            return (EvalAr(Node.Elements().ElementAt(0), CurrentData) > EvalAr(Node.Elements().ElementAt(1), CurrentData));
 
-                            case "ge":
-                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) >= EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                        case "ge":
+                            return (EvalAr(Node.Elements().ElementAt(0), CurrentData) >= EvalAr(Node.Elements().ElementAt(1), CurrentData));
 
-                            case "lt":
-                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) < EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                        case "lt":
+                            return (EvalAr(Node.Elements().ElementAt(0), CurrentData) < EvalAr(Node.Elements().ElementAt(1), CurrentData));
 
-                            case "le":
-                                return (EvalAr(Node.Elements().ElementAt(0), CurrentData) <= EvalAr(Node.Elements().ElementAt(1), CurrentData));
-                        }
-                        break;
-                    case "LogOp":
-                        switch (Node.Attribute("Value").Value)
-                        {
-                            case "NOT":
-                                return !EvalLog(Node.Elements().ElementAt(0), CurrentData);
-                            case "AND":
-                                return EvalLog(Node.Elements().ElementAt(0), CurrentData) && EvalLog(Node.Elements().ElementAt(1), CurrentData);
-                            case "OR":
-                                return EvalLog(Node.Elements().ElementAt(0), CurrentData) || EvalLog(Node.Elements().ElementAt(1), CurrentData);
-                            case "XOR":
-                                return EvalLog(Node.Elements().ElementAt(0), CurrentData) ^ EvalLog(Node.Elements().ElementAt(1), CurrentData);
-                        }
-                        break;
-                    case "TruthVal":
-                        switch (Node.Attribute("Value").Value)
-                        {
-                            case "TRUE":
-                                return true;
-                            case "FALSE":
-                                return false;
-                        }
-                        break;
-                }
+                        case "le":
+                            return (EvalAr(Node.Elements().ElementAt(0), CurrentData) <= EvalAr(Node.Elements().ElementAt(1), CurrentData));
+                    }
+                    break;
+                case "LogOp":
+                    switch (Node.Attribute("Value").Value)
+                    {
+                        case "NOT":
+                            return !EvalLog(Node.Elements().ElementAt(0), CurrentData);
+                        case "AND":
+                            return EvalLog(Node.Elements().ElementAt(0), CurrentData) && EvalLog(Node.Elements().ElementAt(1), CurrentData);
+                        case "OR":
+                            return EvalLog(Node.Elements().ElementAt(0), CurrentData) || EvalLog(Node.Elements().ElementAt(1), CurrentData);
+                        case "XOR":
+                            return EvalLog(Node.Elements().ElementAt(0), CurrentData) ^ EvalLog(Node.Elements().ElementAt(1), CurrentData);
+                    }
+                    break;
+                case "TruthVal":
+                    switch (Node.Attribute("Value").Value)
+                    {
+                        case "TRUE":
+                            return true;
+                        case "FALSE":
+                            return false;
+                    }
+                    break;
             }
-            else
-                return false;
+           
 
             return false;
         }
