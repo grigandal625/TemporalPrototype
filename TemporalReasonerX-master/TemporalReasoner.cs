@@ -1274,7 +1274,7 @@ namespace AT_TemporalReasoner
             if (Node.Name.ToString() == "Attribute") {
                 return this.EvalAttributeNode(Node, CurrentData);
             }
-            if (Node.Name.ToString() == "LogOp")
+            if (Node.Name.ToString() == "LogOp" || Node.Name.ToString() == "EqOp")
             {
                 return this.EvalLogNode(Node, CurrentData);
             }
