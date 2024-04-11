@@ -1287,7 +1287,7 @@ namespace AT_TemporalReasoner
         }
         private TValue EvalAttributeNode(XElement Node, Dictionary<string, string> CurrentData)
         {
-            string attrName = Node.Elements().ElementAt(0).Attribute("Value").Value;
+            string attrName = Node.Attribute("Value").Value;
             if (CurrentData.ContainsKey(attrName))
             {
                 return new TStrValue(CurrentData[attrName]);
