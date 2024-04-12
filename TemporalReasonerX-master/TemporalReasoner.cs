@@ -68,7 +68,7 @@ namespace AT_TemporalReasoner
         }
         public override TBoolValue ToBoolValue()
         {
-            return new TBoolValue(this.content != "");
+            return new TBoolValue(this.content != "FALSE" && this.content != "False");
         }
         public override TNumValue ToNumValue()
         {
@@ -117,7 +117,7 @@ namespace AT_TemporalReasoner
         }
         public override string GetStrContent()
         {
-            return Convert.ToString(this.content);
+            return this.content ? "TRUE" : "FALSE";
         }
         public override TStrValue ToStrValue()
         {
