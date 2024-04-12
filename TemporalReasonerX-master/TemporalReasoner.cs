@@ -156,10 +156,10 @@ namespace AT_TemporalReasoner
             Events = new Dictionary<string, List<int>>();
             intervalsTimes = new Dictionary<string, List<StartFinishTime>>();
 
-            string allendata = File.ReadAllText(eventsIntervalsFileName, Encoding.GetEncoding(1251));
+            string allendata = File.ReadAllText(eventsIntervalsFileName);
             AllenDoc = XDocument.Parse(allendata);
 
-            foreach (XElement el in AllenDoc.Root.Elements("Intervals").Elements())
+            foreach (XElement el in AllenDoc.Descendants("Intervals").First().Elements())
             {
                 SFT.S = -1;
                 SFT.F = -1;
@@ -212,7 +212,7 @@ namespace AT_TemporalReasoner
         }
         public void UpdateIntervalsEventsTime(Dictionary<string, string> CurrentData, int StepNum)
         {
-            IEnumerable<XElement> events = AllenDoc.Root.Elements("Events").Elements(); //Выбираем события
+            IEnumerable<XElement> events = AllenDoc.Descendants("Events").First().Elements(); //Выбираем события
             XElement t;
 
             foreach (XElement ev in events)
@@ -244,7 +244,7 @@ namespace AT_TemporalReasoner
                 }
             }
 
-            IEnumerable<XElement> intervals = AllenDoc.Root.Elements("Intervals").Elements();  //Выбираем интервалы
+            IEnumerable<XElement> intervals = AllenDoc.Descendants("Intervals").First().Elements();  //Выбираем интервалы
             XElement open, close;
             StartFinishTime SFT;
             foreach (XElement intv in intervals)
@@ -365,12 +365,22 @@ namespace AT_TemporalReasoner
 
         private XElement EvalAlIntervals(XElement Node)
         {
-            string Int1 = Node.Elements().ElementAt(0).Attribute("Value").Value;
+            XAttribute a1 = Node.Elements().ElementAt(0).Attribute("Value");
+            if (a1 == null) {
+                a1 = Node.Elements().ElementAt(0).Attribute("Name");
+            }
+            string Int1 = a1.Value;
             int S1 = intervalsTimes[Int1].Last().S;
             int F1 = intervalsTimes[Int1].Last().F;
-            string Int2 = Node.Elements().ElementAt(1).Attribute("Value").Value;
+
+            XAttribute a2 = Node.Elements().ElementAt(1).Attribute("Value");
+            if (a2 == null) {
+                a2 = Node.Elements().ElementAt(1).Attribute("Name");
+            }
+            string Int2 = a2.Value;
             int S2 = intervalsTimes[Int2].Last().S;
             int F2 = intervalsTimes[Int2].Last().F;
+
             switch (Node.Attribute("Value").Value)
             {
                 case "b":
@@ -521,8 +531,21 @@ namespace AT_TemporalReasoner
 
         private XElement EvalAlEvents(XElement Node)
         {
-            string ev1 = Node.Elements().ElementAt(0).Attribute("Name").Value;
-            string ev2 = Node.Elements().ElementAt(1).Attribute("Name").Value;
+
+            XAttribute a1 = Node.Elements().ElementAt(0).Attribute("Value");
+            if (a1 == null)
+            {
+                a1 = Node.Elements().ElementAt(0).Attribute("Name");
+            }
+            string ev1 = a1.Value;
+
+            XAttribute a2 = Node.Elements().ElementAt(1).Attribute("Value");
+            if (a2 == null)
+            {
+                a2 = Node.Elements().ElementAt(1).Attribute("Name");
+            }
+            string ev2 = a2.Value;
+
             switch (Node.Attribute("Value").Value)
             {
                 case "b":
@@ -567,8 +590,20 @@ namespace AT_TemporalReasoner
 
         private XElement EvalAlEventInterval(XElement Node)
         {
-            string ev = Node.Elements().ElementAt(0).Attribute("Name").Value;
-            string interval = Node.Elements().ElementAt(1).Attribute("Name").Value;
+
+            XAttribute a1 = Node.Elements().ElementAt(0).Attribute("Value");
+            if (a1 == null)
+            {
+                a1 = Node.Elements().ElementAt(0).Attribute("Name");
+            }
+            string ev = a1.Value;
+
+            XAttribute a2 = Node.Elements().ElementAt(0).Attribute("Value");
+            if (a2 == null)
+            {
+                a2 = Node.Elements().ElementAt(1).Attribute("Name");
+            }
+            string interval = a2.Value;
             //int intervalStartTime = EventsTime[interval + ".S"];
             // int intervalEndTime = EventsTime[interval + ".F"];
             int intervalStartTime = intervalsTimes[interval].Last().S;

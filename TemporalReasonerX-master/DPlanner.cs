@@ -44,13 +44,13 @@ namespace AT_DynamicPlanner
 
         public void LoadTKB(string TKBName)
         {
-            string bbdata = File.ReadAllText(TKBName, Encoding.GetEncoding(1251));
+            string bbdata = File.ReadAllText(TKBName);
             TKBDoc = XDocument.Parse(bbdata);
         }
 
         public void LoadBB(string BBName)
         {
-            string kbdata = File.ReadAllText(BBName, Encoding.GetEncoding(1251));
+            string kbdata = File.ReadAllText(BBName);
             BB = XDocument.Parse(kbdata);
         }
 

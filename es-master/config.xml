@@ -11,17 +11,17 @@
 </config>
 </object>
 
-<object Name='ESKernel' Class='SolverXLib.SolverX'>
+<!-- <object Name='ESKernel' Class='SolverXLib.SolverX'>
 <config>
-  <FileName>TKBnewforAT.xml</FileName>
+  <FileName>zashita_ver3 (1).xml</FileName>
 </config>
-</object>
+</object> -->
 
 <object Name='TemporalReasoner' Class='MProgram.TemporalReasonerX'>
 	<config>
-  		<FileName>TKBnew.xml</FileName>
- 		<FileNameAT>TKBnewforAT.xml</FileNameAT>
-		<EventsIntervals>Allen2-zashita.xml</EventsIntervals>
+  		<FileName>zashita_ver3 (1).xml</FileName>
+ 		<FileNameAT>zashita_ver3 (1).xml</FileNameAT>
+		<EventsIntervals>zashita_ver3 (1).xml</EventsIntervals>
 		<ModelFileName>minakov_model.xml</ModelFileName>
 	</config>
 </object>
