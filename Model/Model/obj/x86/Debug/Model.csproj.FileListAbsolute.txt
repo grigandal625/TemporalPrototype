@@ -28,3 +28,9 @@ C:\Users\AILAB\Downloads\DLLS\Model\Model\bin\Debug\Model.pdb
 C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.dll
 C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.pdb
 C:\Users\AILAB\Downloads\DLLS\Model\Model\obj\x86\Debug\Model.csprojResolveAssemblyReference.cache
+C:\AT\TemporalPrototype\Model\Model\bin\Debug\Model.dll
+C:\AT\TemporalPrototype\Model\Model\bin\Debug\Model.pdb
+C:\AT\TemporalPrototype\Model\Model\obj\x86\Debug\Model.csproj.AssemblyReference.cache
+C:\AT\TemporalPrototype\Model\Model\obj\x86\Debug\Model.csproj.CoreCompileInputs.cache
+C:\AT\TemporalPrototype\Model\Model\obj\x86\Debug\Model.dll
+C:\AT\TemporalPrototype\Model\Model\obj\x86\Debug\Model.pdb

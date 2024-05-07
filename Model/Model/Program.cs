@@ -12,9 +12,10 @@ using System.Data;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Xml;
+
+[assembly: AssemblyKeyFile("SimModel.snk")]
 namespace Model
 {
-    [assembly: AssemblyKeyFile("SimModel.snk")]
     [Guid("FDE2C8D0-E950-2654-9AE9-516221AFAC31")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComVisible(true)]

@@ -10,10 +10,10 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Xml;
 
+[assembly: AssemblyKeyFile("TReasoner.snk")]
 namespace MProgram
 {
 
-    [assembly: AssemblyKeyFile("TReasoner.snk")]
     [Guid("952D242C-00B2-403A-84F2-A5BF42C80B60")]
     public interface ITemporalReasoner
     {
